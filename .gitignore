@@ -1,0 +1,5 @@
+/base-boxes
+.vagrant
+project
+.DS_Store
+._DS_Store

@@ -1,0 +1,2 @@
+Europe/Rome:
+  timezone.system

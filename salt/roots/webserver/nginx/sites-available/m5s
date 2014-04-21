@@ -1,0 +1,96 @@
+server {
+	listen 80;
+        listen [::]:80;
+	server_name {{ pillar['hostnames']['www'] }} {{ pillar['hostnames']['api'] }};
+
+	error_log /var/log/nginx/{{ salt['pillar.get']('log_name', 'm5s') }}.error.log warn;
+	access_log /var/log/nginx/{{ salt['pillar.get']('log_name', 'm5s') }}.access.log;
+
+	root "{{ pillar['project_folder'] }}/web";
+
+	rewrite ^/app\.php/?(.*)$ /$1 permanent;
+ 
+	try_files $uri @rewriteapp;
+ 
+        location @rewriteapp {
+                rewrite ^(.*)$ /app.php/$1 last;
+        }
+ 
+        # Deny all . files
+        location ~ /\. {
+                deny all;
+        }
+ 
+        location ~ ^/(app|app_dev)\.php(/|$) {
+                fastcgi_split_path_info ^(.+\.php)(/.*)$;
+                include fastcgi_params;
+                fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                fastcgi_index app.php;
+                send_timeout 1800;
+                fastcgi_read_timeout 1800;
+		fastcgi_pass unix:/var/run/m5s-fpm.sock;
+		client_max_body_size 10m;
+	}
+ 
+        # Statics
+        location /(bundles|media) {
+                access_log off;
+                expires 30d;
+ 
+                # Font files
+                if ($uri ~* ^.*?\.(eot)|(ttf)|(woff)$){
+                       add_header Access-Control-Allow-Origin *;
+                }
+ 
+                try_files $uri @rewriteapp;
+        }
+
+        location ~ "^/assets/(.{5})/(.*)$" {
+                access_log off;
+                expires 30d;
+
+                try_files /$2 $uri @rewriteapp;
+        }
+}
+
+server {
+	listen 80;
+        listen [::]:80;
+
+	error_log /var/log/nginx/{{ salt['pillar.get']('log_name', 'm5s') }}.error.log warn;
+	access_log off;
+
+        server_name {{ pillar['hostnames']['cdn'] }};
+        root "{{ pillar['project_folder'] }}/web";
+
+        try_files $uri =404;
+        expires max;
+
+        # Deny all . files
+        location ^~ /\. {
+                deny all;
+        }
+
+        location ~ ^/*\.php {
+                deny all;
+        }
+
+        # Statics
+        location ~ ^/(bundles|media) {
+                expires 30d;
+
+                # Font files
+                if ($uri ~* ^.*?\.(eot)|(ttf)|(woff)$){
+                       add_header Access-Control-Allow-Origin *;
+                }
+
+                try_files $uri =404;
+        }
+
+        location ~ "^/assets/(.{5})/(.*)$" {
+                access_log off;
+                expires 30d;
+
+                try_files /$2 $uri =404;
+        }
+}
