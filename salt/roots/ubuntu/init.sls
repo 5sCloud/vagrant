@@ -39,6 +39,6 @@ apt-util:
     - mode: 0755
     - replace: true
   cmd.run:
-    - name: tr -d '\015' < /usr/local/bin/apt-util > /tmp/apt-util && mv /tmp/apt-util /usr/local/bin/apt-util
+    - name: tr -d '\015' < /usr/local/bin/apt-util > /tmp/apt-util && mv /tmp/apt-util /usr/local/bin/apt-util && chmod 0755 /usr/local/bin/apt-util
     - require:
         - file: apt-util
