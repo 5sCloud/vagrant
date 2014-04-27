@@ -33,3 +33,4 @@ dev:
     - webserver.php-dev
     - ruby
     - capifony
+    - composer
