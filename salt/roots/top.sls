@@ -29,7 +29,9 @@ dev:
     - match: grain
     - nfs
     - git
+    - mysql.pymysql
     - mysql.phpmyadmin
+    - mysql.external-access
     - webserver.php-dev
     - ruby
     - capifony
