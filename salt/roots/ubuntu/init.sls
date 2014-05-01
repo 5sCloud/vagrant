@@ -31,3 +31,10 @@ resolvconf-head:
     - replace: true
     - require:
       - pkg: resolvconf
+
+apt-util:
+  file.managed:
+    - name: /usr/local/bin/apt-util
+    - source: salt://ubuntu/apt-util.sh
+    - mode: 0755
+    - replace: true
