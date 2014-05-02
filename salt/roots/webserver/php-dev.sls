@@ -2,6 +2,7 @@ php5-dev:
   pkg.installed:
     - pkgs:
       - php5-xdebug
+      - phpunit
     - watch_in:
       - service: php5-fpm-restart
 
