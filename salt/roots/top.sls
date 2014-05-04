@@ -27,6 +27,7 @@ base:
 dev:
   'roles:dev':
     - match: grain
+    - ubuntu.dev-hosts
     - nfs
     - git
     - mysql.pymysql
