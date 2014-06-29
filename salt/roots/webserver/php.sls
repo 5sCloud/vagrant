@@ -20,7 +20,6 @@ php5:
       - php5-imagick
       - php5-mcrypt
       - php5-intl
-      - php5-curl
 
 php5-fpm-restart:
   service:

@@ -13,11 +13,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "ubuntu-trusty64"
+  config.vm.box = "ubuntu-trusty32"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box"
   config.vm.hostname = "na-vagrant-webserver-dev"
 
   # Create a private network, which allows host-only access to the machine
@@ -34,11 +34,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
-  if Vagrant::Util::Platform.windows?
-    config.vm.synced_folder "./project", "/var/www/m5s", type: "smb"
-  else
-    config.vm.synced_folder "./project", "/var/www/m5s", nfs: true
-  end
+  config.vm.synced_folder "./project", "/var/www/m5s", nfs: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
