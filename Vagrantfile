@@ -34,11 +34,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
-  if Vagrant::Util::Platform.windows?
-    config.vm.synced_folder "./project", "/var/www/m5s", type: "smb"
-  else
-    config.vm.synced_folder "./project", "/var/www/m5s", nfs: true
-  end
+  config.vm.synced_folder ".", "/var/www/m5s", nfs: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -47,7 +43,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider :virtualbox do |vb|
     # Use VBoxManage to customize the VM. For example to change memory:
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    vb.customize ["modifyvm", :id, "--memory", "512", "--cpus", "1"]
+    vb.customize ["modifyvm", :id, "--memory", "1512", "--cpus", "1"]
   end
 
   config.vm.synced_folder "salt/roots/", "/srv/salt/"
@@ -61,7 +57,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "www" => "m5s.local",
           "api" => "api.m5s.local",
           "cdn" => "static.m5s.local",
-        },
+	  	  "own" => "own.m5s.local"
+	},
         "log_name" => "m5s",
         "project_folder" => "/var/www/m5s"
       })

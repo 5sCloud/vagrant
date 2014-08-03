@@ -30,7 +30,6 @@ dev:
     - ubuntu.dev-hosts
     - nfs
     - git
-    - cifs-utils
     - mysql.pymysql
     - mysql.phpmyadmin
     - mysql.external-access
